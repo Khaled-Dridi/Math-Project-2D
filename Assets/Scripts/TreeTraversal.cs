@@ -26,11 +26,11 @@ public class TreeTraversal : MonoBehaviour
 
         yield return new WaitForSeconds(traversalDelay); // Wait for traversal delay
 
-        yield return StartCoroutine(PreorderTraversal(node.left)); // Traverse left subtree
-        yield return StartCoroutine(PreorderTraversal(node.right)); // Traverse right subtree
-
         SetNodeColor(node, Color.white); // Reset color after traversal
         currentNode = null;
+
+        yield return StartCoroutine(PreorderTraversal(node.left)); // Traverse left subtree
+        yield return StartCoroutine(PreorderTraversal(node.right)); // Traverse right subtree
     }
 
     public IEnumerator InorderTraversal(TreeNode node)
@@ -47,10 +47,10 @@ public class TreeTraversal : MonoBehaviour
 
         yield return new WaitForSeconds(traversalDelay); // Wait for traversal delay
 
-        yield return StartCoroutine(InorderTraversal(node.right)); // Traverse right subtree
-
         SetNodeColor(node, Color.white); // Reset color after traversal
         currentNode = null;
+
+        yield return StartCoroutine(InorderTraversal(node.right)); // Traverse right subtree
     }
 
     public IEnumerator PostorderTraversal(TreeNode node)
@@ -82,13 +82,16 @@ public class TreeTraversal : MonoBehaviour
 
         node.spriteRenderer.color = color;
     }
+
     void ChangeText(string txt)
     {
-        text = text+" "+txt;
+        text = text + " " + txt;
         textPro.text = text;
     }
+
     public void DeleteText()
     {
         text = "";
+        textPro.text = text;
     }
 }
