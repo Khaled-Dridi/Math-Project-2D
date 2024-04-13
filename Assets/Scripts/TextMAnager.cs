@@ -7,7 +7,7 @@ public class TextMAnager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        gameObject.transform.SetParent(GameObject.Find("Canvas").transform);
+        gameObject.transform.SetParent(GameObject.Find("TextCanvas").transform);
     }
 
     

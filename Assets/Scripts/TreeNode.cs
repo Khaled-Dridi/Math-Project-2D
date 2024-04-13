@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class TreeNode : MonoBehaviour
@@ -10,9 +12,9 @@ public class TreeNode : MonoBehaviour
 
     public Color defaultColor = Color.white; // Default color of the node
     public Color selectedColor = Color.yellow; // Color when node is selected
-    private SpriteRenderer spriteRenderer;
+    public SpriteRenderer spriteRenderer;
     private bool signal = false;
-
+    private String position="";
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -24,7 +26,7 @@ public class TreeNode : MonoBehaviour
 
         spriteRenderer.color = defaultColor;
         signal = true;
-
+        
     }
 
     public bool SendSignal()
@@ -35,7 +37,15 @@ public class TreeNode : MonoBehaviour
     public void SetValue(int newValue)
     {
         value = newValue;
-        gameObject.name = value.ToString();
+        SetPosition(position);
+    }
+    public TextMeshProUGUI textMeshProUGUI;
+    public void SetPosition(string pos)
+    {
+        position = pos;
+        textMeshProUGUI.text = position + value.ToString();
+        gameObject.name = position + value.ToString();
+         
     }
 
     public void SelectNode()

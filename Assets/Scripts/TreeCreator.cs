@@ -8,11 +8,11 @@ public class TreeCreator : MonoBehaviour
     private TreeNode selectedNode;     // Keep track of the currently selected node
     private int value = 1;
     public TreeNode rootNode;
-
+  
     void Update()
     {
         // Check for mouse click
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(1))
         {
             Vector3 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             mousePosition.z = 0f; // Ensure nodes are on the same z-plane
@@ -49,6 +49,8 @@ public class TreeCreator : MonoBehaviour
         if (rootNode == null)
         {
             rootNode = nodeComponent;
+            rootNode.gameObject.transform.SetParent(GameObject.Find("Tree").transform);
+            
         }
         nodeComponent.SetValue(value++);
 
@@ -57,10 +59,12 @@ public class TreeCreator : MonoBehaviour
             // If a node is selected, link the new node as its child
             if (selectedNode.left == null)
             {
+                nodeComponent.SetPosition("L");
                 selectedNode.left = nodeComponent;
             }
             else if (selectedNode.right == null)
             {
+                nodeComponent.SetPosition("R");
                 selectedNode.right = nodeComponent;
             }
             else
@@ -69,7 +73,7 @@ public class TreeCreator : MonoBehaviour
                 Destroy(newNode);
                 return;
             }
-
+            nodeComponent.gameObject.transform.SetParent(selectedNode.transform);
             // Visualize the connection (optional)
             DrawLineBetweenNodes(selectedNode.transform.position, position);
 
@@ -109,6 +113,7 @@ public class TreeCreator : MonoBehaviour
     {
         // Example: Use LineRenderer to draw a line between nodes
         LineRenderer lineRenderer = new GameObject("Line").AddComponent<LineRenderer>();
+        lineRenderer.gameObject.transform.SetParent(GameObject.Find("Lines").transform);
         lineRenderer.startWidth = 0.1f;
         lineRenderer.endWidth = 0.1f;
         lineRenderer.positionCount = 2;

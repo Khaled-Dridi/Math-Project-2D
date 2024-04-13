@@ -4,36 +4,72 @@ using UnityEngine;
 
 public class TreeTraversal : MonoBehaviour
 {
-    private Coroutine traversalCoroutine; // Coroutine for traversal
     public float traversalDelay = 2f; // Delay between traversing each node
     public Color visitedColor = Color.green; // Color to change the visited nodes
-    private SpriteRenderer SpriteRenderer;
-    public void PreorderTraversal(TreeNode node)
-    {
-        
-        if (node == null) return;
+    private TreeNode currentNode; // Current node being visited
 
-        Debug.Log(node.value); // Visit the current node
-        PreorderTraversal(node.left); // Traverse left subtree
-        PreorderTraversal(node.right); // Traverse right subtree
+    public IEnumerator PreorderTraversal(TreeNode node)
+    {
+        if (node == null) yield break;
+
+        SetNodeColor(node, visitedColor); // Change color to visited color
+        Debug.Log("Preorder: " + node.value); // Debug the value
+        currentNode = node;
+
+        yield return new WaitForSeconds(traversalDelay); // Wait for traversal delay
+
+        yield return StartCoroutine(PreorderTraversal(node.left)); // Traverse left subtree
+        yield return StartCoroutine(PreorderTraversal(node.right)); // Traverse right subtree
+
+        SetNodeColor(node, Color.white); // Reset color after traversal
+        currentNode = null;
     }
 
-    public void InorderTraversal(TreeNode node)
+    public IEnumerator InorderTraversal(TreeNode node)
     {
-        if (node == null) return;
+        if (node == null) yield break;
 
-        InorderTraversal(node.left); // Traverse left subtree
-        Debug.Log(node.value); // Visit the current node
-        InorderTraversal(node.right); // Traverse right subtree
+        yield return StartCoroutine(InorderTraversal(node.left)); // Traverse left subtree
+
+        SetNodeColor(node, visitedColor); // Change color to visited color
+        Debug.Log("Inorder: " + node.value); // Debug the value
+        currentNode = node;
+
+        yield return new WaitForSeconds(traversalDelay); // Wait for traversal delay
+
+        yield return StartCoroutine(InorderTraversal(node.right)); // Traverse right subtree
+
+        SetNodeColor(node, Color.white); // Reset color after traversal
+        currentNode = null;
     }
 
-    public void PostorderTraversal(TreeNode node)
+    public IEnumerator PostorderTraversal(TreeNode node)
     {
-        if (node == null) return;
+        if (node == null) yield break;
 
-        PostorderTraversal(node.left); // Traverse left subtree
-        PostorderTraversal(node.right); // Traverse right subtree
-        Debug.Log(node.value); // Visit the current node
+        yield return StartCoroutine(PostorderTraversal(node.left)); // Traverse left subtree
+        yield return StartCoroutine(PostorderTraversal(node.right)); // Traverse right subtree
+
+        SetNodeColor(node, visitedColor); // Change color to visited color
+        Debug.Log("Postorder: " + node.value); // Debug the value
+        currentNode = node;
+
+        yield return new WaitForSeconds(traversalDelay); // Wait for traversal delay
+
+        SetNodeColor(node, Color.white); // Reset color after traversal
+        currentNode = null;
     }
+
+    void SetNodeColor(TreeNode node, Color color)
+    {
+        if (node == null || node.spriteRenderer == null)
+        {
+            Debug.LogWarning("Node or SpriteRenderer is null.");
+            return;
+        }
+
+        node.spriteRenderer.color = color;
+    }
+
 
 }
