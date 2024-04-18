@@ -6,7 +6,7 @@ public class TreeCreator : MonoBehaviour
 {
     public GameObject treeNodePrefab;  // Assign your TreeNode prefab in the Inspector
     private TreeNode selectedNode;     // Keep track of the currently selected node
-    private int value = 1;
+    private int value = 0;
     public TreeNode rootNode;
   
     void Update()
@@ -39,10 +39,11 @@ public class TreeCreator : MonoBehaviour
 
     void CreateNode(Vector3 position)
     {
-        if (selectedNode == null && value != 1)
+        if (selectedNode == null && value != 0)
         {
             return;
         }
+
         // Instantiate a new node prefab at the given position
         GameObject newNode = Instantiate(treeNodePrefab, position, Quaternion.identity);
         TreeNode nodeComponent = newNode.GetComponent<TreeNode>();
@@ -52,7 +53,8 @@ public class TreeCreator : MonoBehaviour
             rootNode.gameObject.transform.SetParent(GameObject.Find("Tree").transform);
             
         }
-        nodeComponent.SetValue(value++);
+     
+       
 
         if (selectedNode != null)
         {
@@ -73,6 +75,7 @@ public class TreeCreator : MonoBehaviour
                 Destroy(newNode);
                 return;
             }
+            nodeComponent.SetValue(++value);
             nodeComponent.gameObject.transform.SetParent(selectedNode.transform);
             // Visualize the connection (optional)
             DrawLineBetweenNodes(selectedNode.transform.position, position);

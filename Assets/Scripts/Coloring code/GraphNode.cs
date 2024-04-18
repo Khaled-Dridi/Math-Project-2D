@@ -1,20 +1,13 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
-public class TreeNode : MonoBehaviour
+public class GraphNode : MonoBehaviour
 {
-    public int value;
-    public TreeNode left;
-    public TreeNode right;
-
     public Color defaultColor = Color.white; // Default color of the node
     public Color selectedColor = Color.yellow; // Color when node is selected
     public SpriteRenderer spriteRenderer;
     private bool signal = false;
-    private String position="";
     void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -25,29 +18,13 @@ public class TreeNode : MonoBehaviour
         }
 
         spriteRenderer.color = defaultColor;
-        signal = true;
-        
-    }
 
+        signal = true;
+    }
     public bool SendSignal()
     {
         return signal;
     }
-
-    public void SetValue(int newValue)
-    {
-        value = newValue;
-        SetPosition(position);
-    }
-    public TextMeshProUGUI textMeshProUGUI;
-    public void SetPosition(string pos)
-    {
-        position = pos;
-        textMeshProUGUI.text = position + value.ToString();
-        gameObject.name = position + value.ToString();
-         
-    }
-
     public void SelectNode()
     {
         if (spriteRenderer == null)
